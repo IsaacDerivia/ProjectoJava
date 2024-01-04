@@ -1,3 +1,5 @@
+package proyecto;
+
 import javax.swing.JOptionPane;
 
 public class NuevaCuenta extends CuentaHambiente  {
@@ -17,8 +19,8 @@ public class NuevaCuenta extends CuentaHambiente  {
         CuentaPrueba.setTarjeta(new Plastico());
         CuentaPrueba.setDomicilio(new Domicilio());
         CuentaPrueba.getTarjeta().setNumero(JOptionPane.showInputDialog("Numero de Tarjeta"));
-        CuentaPrueba.getTarjeta().setFechaVencimiento(JOptionPane.showInputDialog("Fecha de Vencimiento"));
-        CuentaPrueba.getTarjeta().setCVV(JOptionPane.showInputDialog("CVV"));
+        CuentaPrueba.getTarjeta().setFecha(JOptionPane.showInputDialog("Fecha de Vencimiento"));
+        CuentaPrueba.getTarjeta().setCVC(JOptionPane.showInputDialog("CVV"));
         CuentaPrueba.getDomicilio().setCalle(JOptionPane.showInputDialog("Calle"));
         CuentaPrueba.getDomicilio().setNumero(JOptionPane.showInputDialog("Numero"));
         CuentaPrueba.getDomicilio().setColonia(JOptionPane.showInputDialog("Colonia"));

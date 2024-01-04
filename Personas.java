@@ -1,5 +1,7 @@
-import javax.swing.JOptionPane;
 package proyecto;
+
+import javax.swing.JOptionPane;
+
 
 public class Personas {
     //atributos de una persona
@@ -41,6 +43,7 @@ public class Personas {
                 JOptionPane.showMessageDialog(null, "Nombre inválido", "Error", JOptionPane.ERROR_MESSAGE);
                 
             }
+            return nombre;
         }
 
         // Validación de apellido
@@ -51,7 +54,8 @@ public class Personas {
                 JOptionPane.showMessageDialog(null, "Apellido inválido", "Error", JOptionPane.ERROR_MESSAGE);
                 
         }
-    }
+            return apellido;
+        }
 
     // Validación de fecha de nacimiento
     private String validarFechaNacimiento(String fechaNacimiento) {
