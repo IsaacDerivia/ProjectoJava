@@ -72,11 +72,13 @@ public class CuentaBancaria implements AccionesCliente {
         JOptionPane.showMessageDialog(null, "Transferencia realizada con exito su saldo actual es: " + this.Saldo + " pesos");
     }
 
-    @Override
-    public void PagoServicio(CuentaHambiente Cuenta, double Cantidad, String Servicio) {
+    public void PagoServicio(CuentaHambiente Cuenta, double Cantidad, Servicios Servicio) {
         this.Saldo = this.Saldo - Cantidad;
         JOptionPane.showMessageDialog(null, "Pago realizado con exito su saldo actual es: " + this.Saldo + " pesos");
     }
+
+
+
 
 
 }

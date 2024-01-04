@@ -14,7 +14,7 @@ public interface AccionesCliente {
     public void Deposito(CuentaHambiente Cuenta, double Cantidad);
     public void Retiro(CuentaHambiente Cuenta, double Cantidad);
     public void Transferencia(CuentaHambiente Cuenta, double Cantidad, String CuentaDestino);
-    public void PagoServicio(CuentaHambiente Cuenta, double Cantidad, String Servicio);
+    public void PagoServicio(CuentaHambiente Cuenta, double Cantidad, Servicios Servicio);
 
 
     
