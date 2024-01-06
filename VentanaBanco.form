@@ -104,6 +104,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Volver al menu"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VolverMenuActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

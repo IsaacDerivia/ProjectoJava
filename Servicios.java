@@ -11,15 +11,14 @@ package proyecto;
 public class Servicios {
       private String Nombre;
       private double Saldo;
-      private String Fecha;
 
     public Servicios() {
     }
 
-    public Servicios(String Nombre, double Saldo, String Fecha) {
+    public Servicios(String Nombre, double Saldo) {
         this.Nombre = Nombre;
         this.Saldo = Saldo;
-        this.Fecha = Fecha;
+        
     }
 
     public String getNombre() {
@@ -38,13 +37,7 @@ public class Servicios {
         this.Saldo = Saldo;
     }
 
-    public String getFecha() {
-        return Fecha;
-    }
 
-    public void setFecha(String Fecha) {
-        this.Fecha = Fecha;
-    }
         
     
     
