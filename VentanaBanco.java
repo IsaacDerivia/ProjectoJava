@@ -4,7 +4,10 @@
  */
 package proyecto;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -226,6 +229,34 @@ public class VentanaBanco extends javax.swing.JFrame {
         ContraUusario.setVisible(false);
         Contraseña.setVisible(false);
         Contraseña.setText("");
+
+        AgregarUsuario.setVisible(false);
+        AgregarUsuario.setEnabled(false);
+        VerUsuarios.setVisible(false);
+        VerUsuarios.setEnabled(false);
+
+        lblnombre.setVisible(false);
+        txtNombre.setVisible(false);
+
+        lblapellido.setVisible(false);
+        txtApellido.setVisible(false);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
        
     }//GEN-LAST:event_btnMenuActionPerformed
@@ -367,14 +398,32 @@ public class VentanaBanco extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nombre,apellido,apellidomaterno,fecha,direccion,telefono,correo,RFC,CURP;
         nombre = txtNombre.getText();
+        ValidarNombre(nombre);
+
         apellido = txtApellido.getText();
+        ValidarApellido(apellido);
+
         apellidomaterno = txtApellidoMaterno.getText();
+        ValidarApellidoMaterno(apellidomaterno);
+
         fecha = txtfecha.getText();
+        ValidarFecha(fecha);
+
+
         direccion = txtDireccion.getText();
+        ValidarDireccion(direccion);
+
         telefono = txtTelefono.getText();
+        ValidarTelefono(telefono);
+
         correo = txtCorreo.getText();
+        ValidarCorreo(correo);
+
         RFC = txtRFC.getText();
+        ValidarRfc(RFC,fecha);
+
         CURP = txtCURP.getText();
+        ValidarCurp(CURP,fecha);
 
         //aqui se limpian los campos
         txtNombre.setText("");
@@ -439,10 +488,109 @@ public class VentanaBanco extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
 
+    //validaciones de los campos
+    public void ValidarNombre(String txtNombre) {
+        String pattern = "^[a-zA-Z]+$";
+        if (!txtNombre.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "El nombre ingresado es inválido. Por favor, ingrese un nombre que solo contenga letras.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-    /**
-     * @param args the command line arguments
-     */
+
+    public void ValidarApellido(String txtApellido) {
+        String pattern = "^[a-zA-Z]+$";
+        if (!txtApellido.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "El apellido ingresado es inválido. Por favor, ingrese un apellido que solo contenga letras.", "Error", JOptionPane.ERROR_MESSAGE);
+
+
+        }
+    }
+
+
+
+        public void ValidarApellidoMaterno(String txtApellidoMaterno) {
+
+            String pattern = "^[a-zA-Z]+$";
+            if (!txtApellidoMaterno.matches(pattern)) {
+                JOptionPane.showMessageDialog(null, "El apellido materno ingresado es inválido. Por favor, ingrese un apellido que solo contenga letras.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+
+    public void ValidarFecha(String txtfecha) {
+
+        String pattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/((19|20)\\d\\d)$";
+        if (!txtfecha.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "La fecha ingresada es inválida. Por favor, ingrese una fecha en el formato dd/mm/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date date = sdf.parse(txtfecha);
+                int year = date.getYear() + 1900; // getYear() returns the year minus 1900
+                if (year < 1960 || year > 2024) {
+                    JOptionPane.showMessageDialog(null, "La fecha ingresada es inválida. Por favor, ingrese una fecha entre los años 1960 y 2024.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void ValidarDireccion(String txtDireccion) {
+        String pattern = "^[a-zA-Z0-9\\s]+$";
+        if (!txtDireccion.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "La dirección ingresada es inválida. Por favor, ingrese una dirección que solo contenga letras y números.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void ValidarTelefono(String txtTelefono) {
+        String pattern = "^[0-9]+$";
+        if (!txtTelefono.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "El teléfono ingresado es inválido. Por favor, ingrese un teléfono que solo contenga números.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void ValidarCorreo(String txtCorreo) {
+        String pattern = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+        if (!txtCorreo.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "El correo ingresado es inválido. Por favor, ingrese un correo que solo contenga letras, números y los caracteres +, _, . y -.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void ValidarRfc(String txtRFC, String txtfecha) {
+
+        String year = txtfecha.substring(6, 8);
+        String month = txtfecha.substring(3, 5);
+        String day = txtfecha.substring(0, 2);
+
+
+        String pattern = "^[A-Z,Ñ,&]{3,4}" + year + month + day + "[A-Z,0-9]{2}[0-9,A]$";
+        if (!txtRFC.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "El RFC ingresado es inválido. Por favor, ingrese un RFC que contenga 12 o 13 caracteres y que incluya la fecha de nacimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void ValidarCurp(String txtCURP, String txtfecha) {
+        // Extract year, month and day from the date
+        String year = txtfecha.substring(8, 10);
+        String month = txtfecha.substring(3, 5);
+        String day = txtfecha.substring(0, 2);
+
+        // CURP pattern for 18 characters, and containing the date
+        String pattern = "^[A-Z]{4}" + year + month + day + "[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[A-Z0-9][0-9]$";
+        if (!txtCURP.matches(pattern)) {
+            JOptionPane.showMessageDialog(null, "La CURP ingresada es inválida. Por favor, ingrese una CURP que contenga 18 caracteres y que incluya la fecha de nacimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+        /**
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
