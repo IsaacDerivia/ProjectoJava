@@ -15,11 +15,14 @@ public class CuentaBancaria implements AccionesCliente {
     double Saldo;
     String NumeroCuenta;
 
+    private String pin;
+
     //constructores
-    public CuentaBancaria(CuentaHambiente Cuenta, double Saldo, String NumeroCuenta){
+    public CuentaBancaria(CuentaHambiente Cuenta, double Saldo, String NumeroCuenta, String pin){
         this.Cuenta = Cuenta;
         this.Saldo = Saldo;
         this.NumeroCuenta = NumeroCuenta;
+        this.pin = pin;
     }
     //constructor vacio
     public CuentaBancaria(){
@@ -48,6 +51,14 @@ public class CuentaBancaria implements AccionesCliente {
 
     public void setNumeroCuenta(String numeroCuenta) {
         NumeroCuenta = numeroCuenta;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     //metodos de la interfaz

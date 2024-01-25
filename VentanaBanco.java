@@ -7,6 +7,7 @@ package proyecto;
 import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,6 +15,9 @@ import java.util.Date;
  * @author isaac
  */
 public class VentanaBanco extends javax.swing.JFrame {
+
+    private ArrayList<Banco> Bancos = new ArrayList<Banco>();
+
 
     /**
      * Creates new form VentanaBanco
@@ -45,6 +49,11 @@ public class VentanaBanco extends javax.swing.JFrame {
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JLabel lblRFC,lblCURP;
     javax.swing.JTextField txtRFC,txtCURP;
+
+    private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnPagarServicios,btnTransferencias,btnDepositos,btnRetiros;
+    private javax.swing.JLabel saldo,numeroCuenta,numerotarjeta,fechaVencimiento,cvc,status;
+
     
     
 
@@ -189,12 +198,20 @@ public class VentanaBanco extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         ContraUusario = new javax.swing.JLabel();
         Contraseña = new javax.swing.JPasswordField();
+        btnIniciarSesion = new javax.swing.JButton();
        
         btnUsuario.setVisible(false);
         btnUsuario.setEnabled(false);
         btnAdmin.setVisible(false);
         btnAdmin.setEnabled(false);
-        
+
+
+
+
+
+
+
+
         lblusuario.setText("Ingrese numero de cuenta");
         getContentPane().add(lblusuario);
         lblusuario.setBounds(60, 120, 200,  200);
@@ -206,13 +223,170 @@ public class VentanaBanco extends javax.swing.JFrame {
         ContraUusario.setBounds(60, 180, 200, 200);
         getContentPane().add(Contraseña);
         Contraseña.setBounds(60, 300, 120, 26);
-        
+
+        btnIniciarSesion.setText("Iniciar Sesion");
+        getContentPane().add(btnIniciarSesion);
+        btnIniciarSesion.setBounds(60, 360, 120, 23);
+
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
         
         
         
         
         
     }//GEN-LAST:event_btnUsuarioActionPerformed
+
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        // TODO add your handling code here:
+
+        boolean menu = false;
+        String usuario,contraseña;
+        usuario = txtUsuario.getText();
+        contraseña = Contraseña.getText();
+        btnPagarServicios = new javax.swing.JButton();
+        btnTransferencias = new javax.swing.JButton();
+        btnDepositos = new javax.swing.JButton();
+        btnRetiros = new javax.swing.JButton();
+        saldo = new javax.swing.JLabel();
+        numeroCuenta = new javax.swing.JLabel();
+        numerotarjeta = new javax.swing.JLabel();
+        fechaVencimiento = new javax.swing.JLabel();
+        cvc = new javax.swing.JLabel();
+        status = new javax.swing.JLabel();
+
+        //for para buscar la cuenta en el arraylist
+
+        do{
+            Banco banco = new Banco();
+            banco.buscarCuenta(usuario,contraseña);
+            if(banco.buscarCuenta(usuario,contraseña).equals(true)) {
+                menu = true;
+                btnUsuario.setVisible(false);
+                btnUsuario.setEnabled(false);
+                btnAdmin.setVisible(false);
+                btnAdmin.setEnabled(false);
+
+                lblusuario.setVisible(false);
+                txtUsuario.setVisible(false);
+                txtUsuario.setText("");
+
+                ContraUusario.setVisible(false);
+                Contraseña.setVisible(false);
+                Contraseña.setText("");
+
+                btnIniciarSesion.setVisible(false);
+                btnIniciarSesion.setEnabled(false);
+
+                btnPagarServicios.setText("Pagar Servicios");
+                getContentPane().add(btnPagarServicios);
+                btnPagarServicios.setBounds(60, 120, 200, 23);
+
+                btnTransferencias.setText("Transferencias");
+                getContentPane().add(btnTransferencias);
+                btnTransferencias.setBounds(60, 180, 200, 23);
+
+                btnDepositos.setText("Depositos");
+                getContentPane().add(btnDepositos);
+                btnDepositos.setBounds(60, 240, 200, 23);
+
+                btnRetiros.setText("Retiros");
+                getContentPane().add(btnRetiros);
+                btnRetiros.setBounds(60, 300, 200, 23);
+
+                saldo.setText("Saldo");
+                getContentPane().add(saldo);
+                saldo.setBounds(300, 120, 200, 200);
+
+                numeroCuenta.setText("Numero de cuenta");
+                getContentPane().add(numeroCuenta);
+                numeroCuenta.setBounds(300, 180, 200, 200);
+
+                numerotarjeta.setText("Numero de tarjeta");
+                getContentPane().add(numerotarjeta);
+                numerotarjeta.setBounds(300, 240, 200, 200);
+
+                fechaVencimiento.setText("Fecha de vencimiento");
+                getContentPane().add(fechaVencimiento);
+                fechaVencimiento.setBounds(300, 300, 200, 200);
+
+                cvc.setText("CVC");
+                getContentPane().add(cvc);
+                cvc.setBounds(300, 360, 200, 200);
+
+                status.setText("Status");
+                getContentPane().add(status);
+                status.setBounds(300, 420, 200, 200);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "El usuario o la contraseña son incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+
+        }while (!menu);
+
+
+
+
+
+
+
+        //agregar botones, pagar servicios, transferencias, depositos, retiros
+
+
+
+
+
+
+        //aqui se limpian los campos
+        txtUsuario.setText("");
+        Contraseña.setText("");
+
+        //aqui se regresa a la ventana anterior
+        btnUsuario.setVisible(false);
+        btnUsuario.setEnabled(false);
+        btnAdmin.setVisible(false);
+        btnAdmin.setEnabled(false);
+
+        AgregarUsuario.setVisible(true);
+        AgregarUsuario.setEnabled(true);
+        VerUsuarios.setVisible(true);
+        VerUsuarios.setEnabled(true);
+
+        lblusuario.setVisible(false);
+        txtUsuario.setVisible(false);
+        txtUsuario.setText("");
+
+        ContraUusario.setVisible(false);
+        Contraseña.setVisible(false);
+        Contraseña.setText("");
+
+        btnIniciarSesion.setVisible(false);
+        btnIniciarSesion.setEnabled(false);
+
+        //aqui se agregan los botones de ver usuarios y agregar usuarios
+        AgregarUsuario = new javax.swing.JButton();
+        VerUsuarios = new javax.swing.JButton();
+
+        AgregarUsuario.setText("Agregar Usuario");
+        getContentPane().add(AgregarUsuario);
+        AgregarUsuario.setBounds(60, 120, 200,  23);
+
+        VerUsuarios.setText("Ver Usuarios");
+        getContentPane().add(VerUsuarios);
+        VerUsuarios.setBounds(60, 180, 200, 23);
+
+
+
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+
+
+
+
 
     private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         // TODO add your handling code here:
@@ -397,6 +571,9 @@ public class VentanaBanco extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         String nombre,apellido,apellidomaterno,fecha,direccion,telefono,correo,RFC,CURP;
+        
+        
+        
         nombre = txtNombre.getText();
         ValidarNombre(nombre);
 
@@ -592,6 +769,11 @@ public class VentanaBanco extends javax.swing.JFrame {
          * @param args the command line arguments
          */
     public static void main(String args[]) {
+
+
+
+
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
