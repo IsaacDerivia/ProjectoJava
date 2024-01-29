@@ -63,7 +63,7 @@ public class CuentaBancaria implements AccionesCliente {
 
     //metodos de la interfaz
     @Override
-    public void Deposito(CuentaHambiente Cuenta, double Cantidad) {
+    public void Deposito(CuentaBancaria Cuenta, double Cantidad) {
         //realizar deposito
         this.Saldo = this.Saldo + Cantidad;
         JOptionPane.showMessageDialog(null, "Deposito realizado con exito, su saldo actual es: " + this.Saldo + " pesos");
@@ -72,18 +72,20 @@ public class CuentaBancaria implements AccionesCliente {
     }
 
     @Override
-    public void Retiro(CuentaHambiente Cuenta, double Cantidad) {
+    public void Retiro(CuentaBancaria Cuenta, double Cantidad) {
         this.Saldo = this.Saldo - Cantidad;
         JOptionPane.showMessageDialog(null, "Retiro realizado con exito su saldo actual es: " + this.Saldo + " pesos");
     }
 
     @Override
-    public void Transferencia(CuentaHambiente Cuenta, double Cantidad, String CuentaDestino) {
+    public void Transferencia(CuentaBancaria Cuenta, double Cantidad, String CuentaDestino) {
         this.Saldo = this.Saldo - Cantidad;
         JOptionPane.showMessageDialog(null, "Transferencia realizada con exito su saldo actual es: " + this.Saldo + " pesos");
     }
 
-    public void PagoServicio(CuentaHambiente Cuenta, double Cantidad, Servicios Servicio) {
+    @Override
+
+    public void PagoServicio(CuentaBancaria Cuenta, double Cantidad, Servicios Servicio) {
         this.Saldo = this.Saldo - Cantidad;
         JOptionPane.showMessageDialog(null, "Pago realizado con exito su saldo actual es: " + this.Saldo + " pesos");
     }

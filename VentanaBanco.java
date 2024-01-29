@@ -5,18 +5,20 @@
 package proyecto;
 
 import javax.swing.*;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
  * @author isaac
  */
 public class VentanaBanco extends javax.swing.JFrame {
-
-    private ArrayList<Banco> Bancos = new ArrayList<Banco>();
+    CuentaBancaria cuentitas = new CuentaBancaria();
 
 
     /**
@@ -51,14 +53,26 @@ public class VentanaBanco extends javax.swing.JFrame {
     javax.swing.JTextField txtRFC,txtCURP;
 
     private javax.swing.JButton btnIniciarSesion;
-    private javax.swing.JButton btnPagarServicios,btnTransferencias,btnDepositos,btnRetiros;
+    private javax.swing.JButton btnPagarServicios,btnTransferencias,btnDepositos,btnRetiros, btnLuz,btnAgua,btnInternet;
     private javax.swing.JLabel saldo,numeroCuenta,numerotarjeta,fechaVencimiento,cvc,status;
 
-    
-    
+    private javax.swing.JLabel lblAdmin,lblcontraAdmin;
+    private javax.swing.JTextField txtAdmin;
+    private javax.swing.JPasswordField txtContraAdmin;
+    private javax.swing.JButton btnIngresarAdmin;
+
+    private javax.swing.JLabel lblTransferencias,lblCuentaDestino,lblMonto;
+    private javax.swing.JTextField txtCuentaDestino,txtMonto;
+
+    private javax.swing.JComboBox jcbcontactos;
+
+    private javax.swing.JButton BtnRealizarTransferencia;
+    private File Transferencias = new File("C:\\Users\\isaac\\OneDrive\\Escritorio\\Universidad\\Programacion 3\\primer parcial\\UNEDL_POO_2023B\\src\\proyecto\\Transferencias.txt");
 
 
-    
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,11 +158,11 @@ public class VentanaBanco extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 278, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -182,6 +196,25 @@ public class VentanaBanco extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public void GuardarTransferencia(CuentaBancaria cuentitas, CuentaBancaria cuenta, double saldo){
+       //guardar la transferencia con fecha y hora
+
+        try {
+            FileWriter myWriter = new FileWriter(Transferencias,true);
+            myWriter.write("Transferencia realizada el " + new Date() + " \npor un monto de " + saldo + " pesos \nde la cuenta " + cuentitas.getNumeroCuenta() + " a la cuenta " + cuenta.getNumeroCuenta() + "\n\n****************************");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+
+
+
+
+    }
+
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
@@ -242,7 +275,7 @@ public class VentanaBanco extends javax.swing.JFrame {
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
-
+        CuentaBancaria cuentita = new CuentaBancaria();
         boolean menu = false;
         String usuario,contraseña;
         usuario = txtUsuario.getText();
@@ -263,8 +296,9 @@ public class VentanaBanco extends javax.swing.JFrame {
         do{
             Banco banco = new Banco();
             banco.buscarCuenta(usuario,contraseña);
-            if(banco.buscarCuenta(usuario,contraseña).equals(true)) {
+            if(usuario.equals(banco.buscarCuenta(usuario,contraseña).getNumeroCuenta()) && contraseña.equals(banco.buscarCuenta(usuario,contraseña).getPin())) {
                 menu = true;
+                cuentitas = banco.buscarCuenta(usuario,contraseña);
                 btnUsuario.setVisible(false);
                 btnUsuario.setEnabled(false);
                 btnAdmin.setVisible(false);
@@ -293,36 +327,42 @@ public class VentanaBanco extends javax.swing.JFrame {
                 getContentPane().add(btnDepositos);
                 btnDepositos.setBounds(60, 240, 200, 23);
 
-                btnRetiros.setText("Retiros");
+                btnRetiros.setText("Retiros ");
                 getContentPane().add(btnRetiros);
                 btnRetiros.setBounds(60, 300, 200, 23);
 
-                saldo.setText("Saldo");
+                saldo.setText("Saldo\n $"+banco.buscarCuenta(usuario,contraseña).getSaldo());
                 getContentPane().add(saldo);
                 saldo.setBounds(300, 120, 200, 200);
 
-                numeroCuenta.setText("Numero de cuenta");
+                numeroCuenta.setText("Numero de cuenta "+banco.buscarCuenta(usuario,contraseña).getNumeroCuenta());
                 getContentPane().add(numeroCuenta);
                 numeroCuenta.setBounds(300, 180, 200, 200);
 
-                numerotarjeta.setText("Numero de tarjeta");
+                numerotarjeta.setText("Numero de tarjeta " +banco.buscarCuenta(usuario,contraseña).getCuenta().getTarjeta().getNumero());
                 getContentPane().add(numerotarjeta);
                 numerotarjeta.setBounds(300, 240, 200, 200);
 
-                fechaVencimiento.setText("Fecha de vencimiento");
+                fechaVencimiento.setText("Fecha de vencimiento " +banco.buscarCuenta(usuario,contraseña).getCuenta().getTarjeta().getFecha());
                 getContentPane().add(fechaVencimiento);
                 fechaVencimiento.setBounds(300, 300, 200, 200);
 
-                cvc.setText("CVC");
+                cvc.setText("CVC " +banco.buscarCuenta(usuario,contraseña).getCuenta().getTarjeta().getCVC());
                 getContentPane().add(cvc);
                 cvc.setBounds(300, 360, 200, 200);
 
-                status.setText("Status");
+                status.setText("Status " +banco.buscarCuenta(usuario,contraseña).getCuenta().getTarjeta().getStatus());
                 getContentPane().add(status);
                 status.setBounds(300, 420, 200, 200);
 
             } else {
+
                 JOptionPane.showMessageDialog(null, "El usuario o la contraseña son incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                txtUsuario.setText("");
+                Contraseña.setText("");
+                usuario = JOptionPane.showInputDialog("Ingrese su numero de cuenta");
+                contraseña = JOptionPane.showInputDialog("Ingrese su pin");
+
             }
 
 
@@ -330,58 +370,341 @@ public class VentanaBanco extends javax.swing.JFrame {
 
 
 
+        //crear los eventos
+
+
+        btnPagarServicios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagarServiciosActionPerformed(evt);
+            }
+        });
+
+        btnTransferencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransferenciasActionPerformed(evt);
+            }
+        });
+
+        btnDepositos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDepositosActionPerformed(evt);
+            }
+        });
+
+        btnRetiros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirosActionPerformed(evt);
+            }
+        });
 
 
 
 
-        //agregar botones, pagar servicios, transferencias, depositos, retiros
 
-
-
-
-
-
-        //aqui se limpian los campos
-        txtUsuario.setText("");
-        Contraseña.setText("");
-
-        //aqui se regresa a la ventana anterior
-        btnUsuario.setVisible(false);
-        btnUsuario.setEnabled(false);
-        btnAdmin.setVisible(false);
-        btnAdmin.setEnabled(false);
-
-        AgregarUsuario.setVisible(true);
-        AgregarUsuario.setEnabled(true);
-        VerUsuarios.setVisible(true);
-        VerUsuarios.setEnabled(true);
-
-        lblusuario.setVisible(false);
-        txtUsuario.setVisible(false);
-        txtUsuario.setText("");
-
-        ContraUusario.setVisible(false);
-        Contraseña.setVisible(false);
-        Contraseña.setText("");
-
-        btnIniciarSesion.setVisible(false);
-        btnIniciarSesion.setEnabled(false);
-
-        //aqui se agregan los botones de ver usuarios y agregar usuarios
-        AgregarUsuario = new javax.swing.JButton();
-        VerUsuarios = new javax.swing.JButton();
-
-        AgregarUsuario.setText("Agregar Usuario");
-        getContentPane().add(AgregarUsuario);
-        AgregarUsuario.setBounds(60, 120, 200,  23);
-
-        VerUsuarios.setText("Ver Usuarios");
-        getContentPane().add(VerUsuarios);
-        VerUsuarios.setBounds(60, 180, 200, 23);
+        
 
 
 
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+
+    //evento para pagar servicios vacio
+    private void btnPagarServiciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarServiciosActionPerformed
+        // TODO add your handling code her
+
+
+
+        //eliminar los botones de la ventana anterior
+        btnPagarServicios.setVisible(false);
+        btnPagarServicios.setEnabled(false);
+        btnTransferencias.setVisible(false);
+        btnTransferencias.setEnabled(false);
+        btnDepositos.setVisible(false);
+        btnDepositos.setEnabled(false);
+        btnRetiros.setVisible(false);
+        btnRetiros.setEnabled(false);
+
+        //crear los botones de pagar servicios
+        btnLuz = new javax.swing.JButton();
+        btnAgua = new javax.swing.JButton();
+        btnInternet = new javax.swing.JButton();
+
+        btnLuz.setText("Luz");
+        getContentPane().add(btnLuz);
+        btnLuz.setBounds(60, 120, 200, 23);
+
+        btnAgua.setText("Agua");
+        getContentPane().add(btnAgua);
+        btnAgua.setBounds(60, 180, 200, 23);
+
+        btnInternet.setText("Internet");
+        getContentPane().add(btnInternet);
+        btnInternet.setBounds(60, 240, 200, 23);
+
+        btnLuz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuzActionPerformed(evt);
+            }
+        });
+
+        btnAgua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAguaActionPerformed(evt);
+            }
+        });
+
+        btnInternet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInternetActionPerformed(evt);
+            }
+        });
+
+
+
+
+
+
+
+
+
+    }//GEN-LAST:event_btnPagarServiciosActionPerformed
+
+    //evento vacio para pagar luz
+    private void btnLuzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuzActionPerformed
+        // TODO add your handling code here:
+        double pago;
+        Servicios luz = new Servicios("Luz", 500);
+
+        pago = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a pagar"));
+
+        if(pago > cuentitas.getSaldo()){
+            JOptionPane.showMessageDialog(null, "No tiene suficiente saldo para realizar el pago");
+        }else{
+            cuentitas.PagoServicio(cuentitas, pago, luz);
+            JOptionPane.showMessageDialog(null, "Pago realizado con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+        }
+
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+        
+
+
+
+
+
+    }
+
+    //evento vacio para pagar agua
+    private void btnAguaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAguaActionPerformed
+        // TODO add your handling code here:
+        double pago;
+        Servicios agua = new Servicios("Agua", 500);
+
+        pago = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a pagar"));
+
+        if(pago > cuentitas.getSaldo()){
+            JOptionPane.showMessageDialog(null, "No tiene suficiente saldo para realizar el pago");
+        }else{
+            cuentitas.PagoServicio(cuentitas, pago, agua);
+            JOptionPane.showMessageDialog(null, "Pago realizado con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+
+        }
+
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+
+
+
+    }
+
+    //evento vacio para pagar internet
+
+    private void btnInternetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInternetActionPerformed
+        // TODO add your handling code here:
+        double pago;
+        Servicios internet = new Servicios("Internet", 500);
+
+        pago = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a pagar"));
+
+        if(pago > cuentitas.getSaldo()){
+            JOptionPane.showMessageDialog(null, "No tiene suficiente saldo para realizar el pago");
+        }else{
+            cuentitas.PagoServicio(cuentitas, pago, internet);
+            JOptionPane.showMessageDialog(null, "Pago realizado con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+
+        }
+
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+
+
+
+    }
+
+
+
+
+
+
+
+
+    //evento para transferencias vacio
+    private void btnTransferenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciasActionPerformed
+        // TODO add your handling code here:
+        //eliminar los botones de la ventana anterior
+        btnPagarServicios.setVisible(false);
+        btnPagarServicios.setEnabled(false);
+        btnTransferencias.setVisible(false);
+        btnTransferencias.setEnabled(false);
+        btnDepositos.setVisible(false);
+        btnDepositos.setEnabled(false);
+        btnRetiros.setVisible(false);
+        btnRetiros.setEnabled(false);
+
+        jcbcontactos = new javax.swing.JComboBox();
+        lblTransferencias = new javax.swing.JLabel();
+        lblCuentaDestino = new javax.swing.JLabel();
+        lblMonto = new javax.swing.JLabel();
+        txtCuentaDestino = new javax.swing.JTextField();
+        txtMonto = new javax.swing.JTextField();
+        BtnRealizarTransferencia = new javax.swing.JButton();
+
+        lblTransferencias.setText("Transferencias");
+        getContentPane().add(lblTransferencias);
+        lblTransferencias.setBounds(60, 120, 200,  200);
+
+        lblCuentaDestino.setText("Cuenta destino");
+        getContentPane().add(lblCuentaDestino);
+        lblCuentaDestino.setBounds(60, 180, 200, 200);
+        getContentPane().add(txtCuentaDestino);
+        txtCuentaDestino.setBounds(60, 300, 120, 26);
+
+        lblMonto.setText("Monto");
+        getContentPane().add(lblMonto);
+        lblMonto.setBounds(60, 240, 200, 200);
+        getContentPane().add(txtMonto);
+        txtMonto.setBounds(60, 360, 120, 26);
+
+        BtnRealizarTransferencia.setText("Realizar Transferencia");
+        getContentPane().add(BtnRealizarTransferencia);
+        BtnRealizarTransferencia.setBounds(60, 420, 200, 23);
+
+        BtnRealizarTransferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRealizarTransferenciaActionPerformed(evt);
+            }
+        });
+
+        //llenar el combobox con los contactos
+        Banco banco = new Banco();
+        for (CuentaBancaria cuenta : banco.cuentas) {
+            jcbcontactos.addItem(cuenta.getCuenta().getNombre());
+        }
+        getContentPane().add(jcbcontactos);
+        jcbcontactos.setBounds(60, 180, 120, 26);
+
+
+
+
+
+
+
+
+
+    }//GEN-LAST:event_btnTransferenciasActionPerformed
+
+    //evento para realizar transferencia
+    private void BtnRealizarTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRealizarTransferenciaActionPerformed
+        // TODO add your handling code here:
+        double monto;
+        String cuentaDestino;
+        cuentaDestino = txtCuentaDestino.getText();
+        monto = Double.parseDouble(txtMonto.getText());
+        Banco banco = new Banco();
+        boolean menu = false;
+        CuentaBancaria cuentita = new CuentaBancaria();
+
+        for (CuentaBancaria cuenta : banco.cuentas) {
+            if (cuentaDestino.equals(cuenta.getNumeroCuenta())) {
+                menu = true;
+                cuentitas.Transferencia(cuentitas, monto, cuentaDestino);
+                JOptionPane.showMessageDialog(null, "Transferencia realizada con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+                cuentita = cuenta;
+                break;
+
+            }
+        }
+        if (!menu) {
+            JOptionPane.showMessageDialog(null, "La cuenta destino no existe");
+        }
+
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+
+        //limpiar los campos
+        txtCuentaDestino.setText("");
+        txtMonto.setText("");
+
+
+        //guardar la transferencia en un archivo
+        GuardarTransferencia(cuentitas,cuentita,monto);
+
+
+
+
+
+    }
+
+    //evento para depositos vacio
+    private void btnDepositosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositosActionPerformed
+        // TODO add your handling code here:
+
+        double deposito;
+        deposito = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a depositar"));
+        cuentitas.Deposito(cuentitas, deposito);
+        JOptionPane.showMessageDialog(null, "Deposito realizado con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+
+
+
+
+    }//GEN-LAST:event_btnDepositosActionPerformed
+
+    //evento para retiros vacio
+
+    private void btnRetirosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirosActionPerformed
+        // TODO add your handling code here:
+
+        double retiro;
+        retiro = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a retirar"));
+        if(retiro > cuentitas.getSaldo()){
+            JOptionPane.showMessageDialog(null, "No tiene suficiente saldo para realizar el retiro");
+        }else{
+            cuentitas.Retiro(cuentitas, retiro);
+            JOptionPane.showMessageDialog(null, "Retiro realizado con exito, su saldo actual es: " + cuentitas.getSaldo() + " pesos");
+
+        }
+        //actualizar el saldo
+        saldo.setText("Saldo\n $"+cuentitas.getSaldo());
+
+
+
+    }//GEN-LAST:event_btnRetirosActionPerformed
+
+    //evento para ver usuarios vacio
+
+    private void VerUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerUsuariosActionPerformed
+        // TODO add your handling code here:
+
+
+
+
+    }//GEN-LAST:event_VerUsuariosActionPerformed
+
+    //evento para agregar usuarios vacio
+
+
 
 
 
@@ -441,30 +764,61 @@ public class VentanaBanco extends javax.swing.JFrame {
         AgregarUsuario = new javax.swing.JButton();
         VerUsuarios = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
+        lblAdmin = new javax.swing.JLabel();
+        lblcontraAdmin = new javax.swing.JLabel();
+        txtAdmin = new javax.swing.JTextField();
+        txtContraAdmin = new javax.swing.JPasswordField();
+        btnIngresarAdmin = new javax.swing.JButton();
 
         btnUsuario.setVisible(false);
         btnUsuario.setEnabled(false);
         btnAdmin.setVisible(false);
         btnAdmin.setEnabled(false);
 
-        AgregarUsuario.setText("Agregar Usuario");
-        getContentPane().add(AgregarUsuario);
-        AgregarUsuario.setBounds(60, 120, 200,  23);
 
-        VerUsuarios.setText("Ver Usuarios");
-        getContentPane().add(VerUsuarios);
-        VerUsuarios.setBounds(60, 180, 200, 23);
 
-        //action listener para agregar usuario
-        AgregarUsuario.addActionListener(new java.awt.event.ActionListener() {
+        //pedir inicio de sesion
+
+        lblAdmin.setText("Ingrese usuario");
+        getContentPane().add(lblAdmin);
+        lblAdmin.setBounds(60, 120, 200,  200);
+        getContentPane().add(txtAdmin);
+        txtAdmin.setBounds(60, 240, 120, 26);
+
+        lblcontraAdmin.setText("ingrese contraseña");
+        getContentPane().add(lblcontraAdmin);
+        lblcontraAdmin.setBounds(60, 180, 200, 200);
+        getContentPane().add(txtContraAdmin);
+        txtContraAdmin.setBounds(60, 300, 120, 26);
+
+        btnIngresarAdmin.setText("Ingresar");
+        getContentPane().add(btnIngresarAdmin);
+        btnIngresarAdmin.setBounds(60, 360, 120, 23);
+
+        btnIngresarAdmin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AgregarUsuarioActionPerformed(evt);
+                btnIngresarAdminActionPerformed(evt);
             }
         });
 
+
+
+
+
+
         
-        
+
+
     }//GEN-LAST:event_btnAdminActionPerformed
+
+    //action listener para ingresar como admin
+    private void btnIngresarAdminActionPerformed(java.awt.event.ActionEvent evt) {
+
+
+
+    }
+
+
 
     private void AgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AgregarUsuarioActionPerformed
         // TODO add your handling code here:
@@ -566,6 +920,13 @@ public class VentanaBanco extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_AgregarUsuarioActionPerformed
+
+
+
+
+
+
+
 
     //action listener para agregar usuario donde solo se guarden en variables locales
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed

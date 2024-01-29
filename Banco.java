@@ -2,9 +2,12 @@ package proyecto;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import javax.swing.JOptionPane;
 
 public class Banco {
-    private ArrayList<CuentaBancaria> cuentas;
+    CuentaBancaria CuentaBancarias;
+    String  Admin, ContrasenaAdmin;
+     ArrayList<CuentaBancaria> cuentas;
 
     public Banco() {
         cuentas = new ArrayList<>();
@@ -20,9 +23,9 @@ public class Banco {
         Plastico plastico3 = new Plastico("1234567890123458", "123", "12/12/2021", "Activo");
 
         // crea 3 cuentaHambiente aleatorias
-        CuentaHambiente cuentaHambiente1 = new CuentaHambiente("Nombre 1", "ApellidoPaterno 1", "ApellidoMaterno 1", "FechaNacimiento 1", "RFC 1", "CURP 1", "Telefono 1", "Correo 1", "Usuario 1", "Contrasena 1", plastico1, domicilio1);
-        CuentaHambiente cuentaHambiente2 = new CuentaHambiente("Nombre 2", "ApellidoPaterno 2", "ApellidoMaterno 2", "FechaNacimiento 2", "RFC 2", "CURP 2", "Telefono 2", "Correo 2", "Usuario 2", "Contrasena 2", plastico2, domicilio2);
-        CuentaHambiente cuentaHambiente3 = new CuentaHambiente("Nombre 3", "ApellidoPaterno 3", "ApellidoMaterno 3", "FechaNacimiento 3", "RFC 3", "CURP 3", "Telefono 3", "Correo 3", "Usuario 3", "Contrasena 3", plastico3, domicilio3);
+        CuentaHambiente cuentaHambiente1 = new CuentaHambiente("Josecito", "ApellidoPaterno 1", "ApellidoMaterno 1", "FechaNacimiento 1", "RFC 1", "CURP 1", "Telefono 1", "Correo 1", "Usuario 1", "Contrasena 1", plastico1, domicilio1);
+        CuentaHambiente cuentaHambiente2 = new CuentaHambiente("Alejandra", "ApellidoPaterno 2", "ApellidoMaterno 2", "FechaNacimiento 2", "RFC 2", "CURP 2", "Telefono 2", "Correo 2", "Usuario 2", "Contrasena 2", plastico2, domicilio2);
+        CuentaHambiente cuentaHambiente3 = new CuentaHambiente("Max", "ApellidoPaterno 3", "ApellidoMaterno 3", "FechaNacimiento 3", "RFC 3", "CURP 3", "Telefono 3", "Correo 3", "Usuario 3", "Contrasena 3", plastico3, domicilio3);
 
 
         // crea 3 cuentas bancarias con saldo aleatorio
@@ -63,12 +66,52 @@ public class Banco {
     }
 
     public CuentaBancaria buscarCuenta(String numero, String pin) {
-        for (int i = 0; i < cuentas.size(); i++) {
-            if (Objects.equals(cuentas.get(i).getNumeroCuenta(), numero) && Objects.equals(cuentas.get(i).getPin(), pin)) {
-                return cuentas.get(i);
-            }
+        //buscador de cuenta con validaciones
+        boolean menu = false;
+        for (CuentaBancaria cuenta : cuentas) {
+
+            do {             
+                
+                if (numero.equals(cuenta.getNumeroCuenta()) && pin.equals(cuenta.getPin())) {
+                    CuentaBancarias = cuenta;
+                    menu = true;
+                    return cuenta;
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Numero de cuenta o pin incorrecto");
+
+                    //pedir de nuevo el numero de cuenta y pin
+                    numero = JOptionPane.showInputDialog("Ingrese su numero de cuenta");
+                    pin = JOptionPane.showInputDialog("Ingrese su pin");
+
+
+
+
+
+
+
+                }
+
+                
+            } while (!menu);
+            
+            
         }
+
         return null;
+        
     }
+
+    //validar admin
+    public boolean validarAdmin(String Admin, String ContrasenaAdmin){
+        if(Admin.equals("Admin") && ContrasenaAdmin.equals("1234")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
 
 }
